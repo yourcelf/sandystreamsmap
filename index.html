@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Occupy Streams Map</title>
+<title>Hurricane Sandy Livestream Map</title>
+<meta http-equiv='Content-Type' content="text/html;charset=utf-8" />
 <link rel="stylesheet" href="leaflet/leaflet.css" />
 <style type='text/css'>
     html,body {
@@ -48,9 +49,7 @@
 <body>
 <div id='map'></div>
 <div class='title'>
-    <span style='color: #900;'>OCCUPY</span>
-    <span style='color: #000;'>STREAMS</span>
-    <span style='color: #999'>MAP</span>
+    <span style='color: #900;'>Hurricane Sandy</span>
 </div>
 <div class='search'>
     Find location:
@@ -98,11 +97,11 @@ var generators = {
             style: {
                 url: "http://static-cdn.jtvnw.net/previews/live_user_" + source.id + "-70x53.jpg",
                 width: 24,
-                height: 18,
+                height: 18
             },
             html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>",
                 "<a href='", source.url, "'>",
-                "<img class='justintvthumb' src='http://static-cdn.jtvnw.net/previews/live_user_", source.id, "-320x240.jpg' width='240' height='180' /></a>"
+                "<img class='justintvthumb' src='http://static-cdn.jtvnw.net/previews/live_user_", source.id, "-320x240.jpg?' width='240' height='180' /></a>"
             ].join("")
         }
     },
@@ -115,7 +114,7 @@ var generators = {
             },
             html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>", "<a href='", source.url, "'><img src='img/ustream.jpg'></a>"].join("")
         }
-    },
+    }
 };
 var osm = new L.TileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
     attribution: 'Map data &copy; OpenStreetMap contributors, CC-BY-SA.  Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">.',
@@ -143,7 +142,7 @@ for (var i = 0; i < data.sources.length; i++) {
     var repr = generators[source.provider](source);
     var Icon = L.Icon.extend({
         iconUrl: repr.style.url,
-        iconSize: new L.Point(repr.style.width, repr.style.height),
+        iconSize: new L.Point(repr.style.width, repr.style.height)
     });
     var point = new L.LatLng(lat, lng);
     var marker = new L.Marker(point, {icon: new Icon()})
@@ -204,5 +203,17 @@ window.setInterval(function() {
 
 
 </script>
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://betweenthebars.org/analytics/" : "http://betweenthebars.org/analytics/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 5);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://betweenthebars.org/analytics/piwik.php?idsite=5" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
 </body>
 </html>
