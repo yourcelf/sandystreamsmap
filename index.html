@@ -122,36 +122,36 @@ var osm = new L.TileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png"
     maxZoom: 20
 });
 
-var weather = new L.TileLayer("http://openweathermap.org/t/tile.cgi/1.0.0/GLBETA_PR/{z}/{x}/{y}.png", {
-  attribution: "<a href='http://openweathermap.org'>Weather data by OpenWeatherMap.org</a>",
-  opacity: 0.2
-})
-
-//var WeatherLayer = L.TileLayer.WMS.extend({
-//  getTileUrl: function(tilePoint, zoom) {
-//    var map = this._map,
-//        crs = map.options.crs,
-//        tileSize = this.options.tileSize,
-//
-//        nwPoint = tilePoint.multiplyBy(tileSize),
-//        sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
-//
-//        nw = crs.project(map.unproject(nwPoint, zoom)),
-//        se = crs.project(map.unproject(sePoint, zoom)),
-//
-//
-//        bbox = [nw.x, se.y, se.x, nw.y].join(',');
-//        return "http://openweathermap.org/t/t?url=SERVICE=WMS%26REQUEST=GetMap%26FORMAT=image%2Fpng%26TRANSPARENT=true%26VERSION=1.1.1%26SRS=EPSG%3A900913%26HEIGHT=256%26WIDTH=256%26LAYERS=GLBETA_UV%26BBOX=" + bbox;
-//  }
-//});
-//
-//
-//var weather = new WeatherLayer("http://openweathermap.org/t/t?url=", {
-//  opacity: 0.3,
-//  maxZoom: 5,
-//  minZoom: 1,
-//  noWrap: true
+//var weather = new L.TileLayer("http://openweathermap.org/t/tile.cgi/1.0.0/GLBETA_PR/{z}/{x}/{y}.png", {
+//  attribution: "<a href='http://openweathermap.org'>Weather data by OpenWeatherMap.org</a>",
+//  opacity: 0.2
 //})
+
+var WeatherLayer = L.TileLayer.WMS.extend({
+  getTileUrl: function(tilePoint, zoom) {
+    var map = this._map,
+        crs = map.options.crs,
+        tileSize = this.options.tileSize,
+
+        nwPoint = tilePoint.multiplyBy(tileSize),
+        sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
+
+        nw = crs.project(map.unproject(nwPoint, zoom)),
+        se = crs.project(map.unproject(sePoint, zoom)),
+
+
+        bbox = [nw.x, se.y, se.x, nw.y].join(',');
+        return "http://openweathermap.org/t/t?url=SERVICE=WMS%26REQUEST=GetMap%26FORMAT=image%2Fpng%26TRANSPARENT=true%26VERSION=1.1.1%26SRS=EPSG%3A900913%26HEIGHT=256%26WIDTH=256%26LAYERS=GLBETA_UV%26BBOX=" + bbox;
+  }
+});
+
+
+var weather = new WeatherLayer("http://openweathermap.org/t/t?url=", {
+  opacity: 0.3,
+  minZoom: 1,
+  noWrap: true,
+  attribution: "<a href='http://openweathermap.org'>Windspeed data by OpenWeatherMap.org</a>"
+})
 
 
 var map = new L.Map('map', {
@@ -172,14 +172,14 @@ for (var i = 0; i < data.sources.length; i++) {
 
     // draw.
     var repr = generators[source.provider](source);
-    var Icon = L.Icon.extend({
+    var icon = new L.Icon({
         iconUrl: repr.style.url,
         iconSize: new L.Point(repr.style.width, repr.style.height)
     });
     var point = new L.LatLng(lat, lng);
-    var marker = new L.Marker(point, {icon: new Icon()})
-    marker.bindPopup(repr.html)
-    map.addLayer(marker);
+    var marker = new L.Marker(point, {icon: icon})
+    marker.addTo(map);
+    marker.bindPopup(repr.html);
     bounds.push(point);
 }
 map.fitBounds(new L.LatLngBounds(bounds));
