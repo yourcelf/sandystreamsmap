@@ -106,13 +106,14 @@ var generators = {
         }
     },
     "ustream": function(source) {
+        console.log(source);
         return {
             style: {
-                url: "img/ustream.jpg",
+                url: (source.livethumb ? source.livethumb : "img/ustream.jpg"),
                 width: 25,
                 height: 25
             },
-            html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>", "<a href='", source.url, "'><img src='img/ustream.jpg'></a>"].join("")
+            html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>", "<a href='", source.url, "'><img src='", (source.livethumb ? source.livethumb : "img/ustream.jpg"), "'></a>"].join("")
         }
     }
 };

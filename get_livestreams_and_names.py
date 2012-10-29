@@ -29,10 +29,11 @@ reader = csv.reader(open("Hurricane Sandy livestreams - Sheet1.csv"))
 sources = []
 items = iter(reader)
 items.next()
-for url,locname in items:
+for url,locname,livethumb in items:
     source = {
             'location': locname,
             'url': url,
+            'livethumb': livethumb,
     }
     if "ustream" in url:
         source['provider'] = "ustream"
