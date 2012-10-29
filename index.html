@@ -41,6 +41,12 @@
         padding: 0.5em;
         z-index: 10;
     }
+    .speed {
+      position: absolute;
+      right: 0px;
+      bottom: 30px;
+      opacity: 0.8;
+    }
     input.loading {
         background: url("img/spinner.gif") no-repeat;
     }
@@ -60,6 +66,9 @@
         <input type='submit' value='Go' />
         <div class='results'></div>
     </form>
+</div>
+<div class='speed'>
+  <img src='img/knots.png' alt='Wind speed in knots' />
 </div>
 <script src='js/jquery.min.js'></script>
 <script type='text/javascript' src='data.js'></script>
