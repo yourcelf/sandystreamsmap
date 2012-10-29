@@ -29,7 +29,7 @@ reader = csv.reader(open("Hurricane Sandy livestreams - Sheet1.csv"))
 sources = []
 items = iter(reader)
 items.next()
-for url,locname,livethumb in items:
+for url,locname,livethumb,notes in items:
     source = {
             'location': locname,
             'url': url,
@@ -42,7 +42,9 @@ for url,locname,livethumb in items:
         source['id'] = re.search("livestream.com/([^/]+)/", url).group(1)
     elif "justin" in url:
         source['provider'] = "justintv"
-        source['id'] = re.search("justin.tv/([^/]+)(/|$)", url).group(1)
+        source['id'] = re.search("justin.tv/([^/#]+)(/|$|#)", url).group(1)
+    elif "earthcam" in url:
+        source['provider'] = "earthcam"
     else:
         assert False, "Unknown provider %s" % url
 

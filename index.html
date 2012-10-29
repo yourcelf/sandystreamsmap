@@ -23,11 +23,11 @@
         left: 0;
         width: 70%;
         text-align: center;
-        font-size: 38pt;
         z-index: 1000;
         font-weight: bold;
         text-shadow: #999 2px -2px 5px;
-        margin-left: 15%
+        margin-left: 15%;
+        font-size: 38pt;
     }
     #map {
         width: 100%;
@@ -49,9 +49,11 @@
 <body>
 <div id='map'></div>
 <div class='title'>
-    <span style='color: #900;'>Hurricane Sandy</span>
+  <span style='color: #900;'>Hurricane Sandy</span>
 </div>
 <div class='search'>
+    Help by 
+    <a href='http://bit.ly/hurricanehackers-sandystreams'>Adding more livestreams</a>!<br/>
     Find location:
     <form id='searchform' method='get' action=''>
         <input type='text' id='search' placeholder='e.g. New York' />
@@ -65,19 +67,6 @@
 <script type='text/javascript'>
 // Replace this with your own API key!
 var CLOUDMADE_API_KEY = '647c4a0955a247f894f83468e96ea60d'; // key for http://web.media.mit.edu/~cfd/occupystreamsmap/
-
-// occupystreams.org vanished?  Replace with direct links to stream providers.
-// whoops, it's back.
-//for (var i = 0; i < data.sources.length ; i++) {
-//    var s = data.sources[i];
-//    if (s.provider === "livestream") {
-//        s.url = "http://livestream.com/" + s.id;
-//    } else if (s.provider === "ustream") {
-//        s.url = "http://ustream.tv/channel/" + s.id;
-//    } else if (s.provider === "justintv") {
-//        s.url = "http://justin.tv/" + s.id;
-//    }
-//}
 
 var generators = {
     "livestream": function(source) {
@@ -108,11 +97,21 @@ var generators = {
     "ustream": function(source) {
         return {
             style: {
-                url: (source.livethumb ? source.livethumb : "img/ustream.jpg"),
+                url: (source.livethumb ? source.livethumb : "img/ustream-fancy.png"),
                 width: 25,
                 height: 25
             },
             html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>", "<a href='", source.url, "'><img src='", (source.livethumb ? source.livethumb : "img/ustream.jpg"), "'></a>"].join("")
+        }
+    },
+    "earthcam": function(source) {
+        return {
+            style: {
+              url: "img/earthcam-fancy.png",
+              width: 25,
+              height: 25
+            },
+            html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>", "<a href='", source.url, "'><img src='img/earthcam-fancy.png' /></a>"].join("")
         }
     }
 };
@@ -130,9 +129,6 @@ var weather = new L.TileLayer("http://openweathermap.org/t/tile.cgi/1.0.0/GLBETA
 
 //var WeatherLayer = L.TileLayer.WMS.extend({
 //  getTileUrl: function(tilePoint, zoom) {
-//    if (zoom > 5) {
-//        return null;
-//    }
 //    var map = this._map,
 //        crs = map.options.crs,
 //        tileSize = this.options.tileSize,
@@ -151,7 +147,6 @@ var weather = new L.TileLayer("http://openweathermap.org/t/tile.cgi/1.0.0/GLBETA
 //
 //
 //var weather = new WeatherLayer("http://openweathermap.org/t/t?url=", {
-//  LAYERS: "GLBETA_UV",
 //  opacity: 0.3,
 //  maxZoom: 5,
 //  minZoom: 1,
