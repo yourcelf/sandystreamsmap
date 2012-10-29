@@ -106,7 +106,6 @@ var generators = {
         }
     },
     "ustream": function(source) {
-        console.log(source);
         return {
             style: {
                 url: (source.livethumb ? source.livethumb : "img/ustream.jpg"),
@@ -123,8 +122,45 @@ var osm = new L.TileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png"
     minZoom: 2,
     maxZoom: 20
 });
+
+var weather = new L.TileLayer("http://openweathermap.org/t/tile.cgi/1.0.0/GLBETA_PR/{z}/{x}/{y}.png", {
+  attribution: "<a href='http://openweathermap.org'>Weather data by OpenWeatherMap.org</a>",
+  opacity: 0.2
+})
+
+//var WeatherLayer = L.TileLayer.WMS.extend({
+//  getTileUrl: function(tilePoint, zoom) {
+//    if (zoom > 5) {
+//        return null;
+//    }
+//    var map = this._map,
+//        crs = map.options.crs,
+//        tileSize = this.options.tileSize,
+//
+//        nwPoint = tilePoint.multiplyBy(tileSize),
+//        sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
+//
+//        nw = crs.project(map.unproject(nwPoint, zoom)),
+//        se = crs.project(map.unproject(sePoint, zoom)),
+//
+//
+//        bbox = [nw.x, se.y, se.x, nw.y].join(',');
+//        return "http://openweathermap.org/t/t?url=SERVICE=WMS%26REQUEST=GetMap%26FORMAT=image%2Fpng%26TRANSPARENT=true%26VERSION=1.1.1%26SRS=EPSG%3A900913%26HEIGHT=256%26WIDTH=256%26LAYERS=GLBETA_UV%26BBOX=" + bbox;
+//  }
+//});
+//
+//
+//var weather = new WeatherLayer("http://openweathermap.org/t/t?url=", {
+//  LAYERS: "GLBETA_UV",
+//  opacity: 0.3,
+//  maxZoom: 5,
+//  minZoom: 1,
+//  noWrap: true
+//})
+
+
 var map = new L.Map('map', {
-    layers: [osm]
+    layers: [osm, weather]
 });
 map.attributionControl.setPrefix("");
 var overlaps = {};
