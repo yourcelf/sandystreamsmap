@@ -1,7 +1,11 @@
-Occupy Streams Map
+Sandy Streams Map
 ==================
 
-A simple map view of the streams at http://occupystreams.org/
+A map of livestreams of Hurricane Sandy.
+Live on the web: http://sandystreamsmap.tirl.org
 
-To update, run the python script get_livestreams_and_names.py.
-Replace the variable "data" in index.html with the output.
+Help by adding livestreams here: http://bit.ly/hurricanehackers-sandystreams 
+
+Other #HurricaneHackers projects: http://bit.ly/hurricanehackers-gdoc
+
+
