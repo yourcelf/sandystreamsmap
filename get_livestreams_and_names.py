@@ -25,15 +25,17 @@ def get_cached_page(url):
         content = fh.read()
     return content
 
-reader = csv.reader(open("Hurricane Sandy livestreams - Sheet1.csv"))
+reader = csv.reader(open("Hurricane Sandy livestreams - Working cameras.csv"))
 sources = []
 items = iter(reader)
 items.next()
-for url,locname,livethumb,notes in items:
+items.next()
+for url, locname, livethumb, embed_code, notes in items:
     source = {
             'location': locname,
             'url': url,
             'livethumb': livethumb,
+            'embed_code': embed_code,
     }
     if "ustream" in url:
         source['provider'] = "ustream"
@@ -46,7 +48,7 @@ for url,locname,livethumb,notes in items:
     elif "earthcam" in url:
         source['provider'] = "earthcam"
     else:
-        assert False, "Unknown provider %s" % url
+        source['provider'] = "other"
 
     latlng = json.loads(get_cached_page(
         "https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=%s" % urllib.quote_plus(locname.encode('utf8'))
@@ -55,4 +57,4 @@ for url,locname,livethumb,notes in items:
     source['point'] = latlng['results'][0]['geometry']['location']
     sources.append(source)
 
-print "var data = %s" % json.dumps({'sources': sources})
+print "var data = %s" % json.dumps({'sources': sources}, indent=2)

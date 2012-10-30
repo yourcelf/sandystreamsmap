@@ -11,13 +11,12 @@
         padding: 0;
         height: 100%;
         font-family: "Helvetica Neue","Liberation Sans",Arial,Verdana,Helvetica,FreeSans,sans-serif;
-        text-transform: uppercase;
     }
     a:link { color: #760000; text-decoration: none;}
     a:hover { color: #000000 }
     a:visited { color: #960000; text-decoration: none; }
-    .olwidgetPopupContent { text-align: center; }
     .title {
+        text-transform: uppercase;
         position: absolute;
         top: 0;
         left: 0;
@@ -50,6 +49,9 @@
     input.loading {
         background: url("img/spinner.gif") no-repeat;
     }
+    .leaflet-popup-content {
+        min-width: 200px;
+    }
 </style>
 </head>
 <body>
@@ -66,6 +68,7 @@
         <input type='submit' value='Go' />
         <div class='results'></div>
     </form>
+    More <a href='http://bit.ly/hh-index'>#HurricaneHackers projects</a>
 </div>
 <div class='speed'>
   <img src='img/knots.png' alt='Wind speed in knots' />
@@ -73,6 +76,7 @@
 <script src='js/jquery.min.js'></script>
 <script type='text/javascript' src='data.js'></script>
 <script type='text/javascript' src='leaflet/leaflet.js'></script>
+<script type='text/javascript' src='js/leaflet-plugins.js'></script>
 <script type='text/javascript'>
 // Replace this with your own API key!
 var CLOUDMADE_API_KEY = '647c4a0955a247f894f83468e96ea60d'; // key for http://web.media.mit.edu/~cfd/occupystreamsmap/
@@ -86,31 +90,41 @@ var generators = {
                 height: 18
             },
             html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>",
-                "<a href='", source.url, "'><img class='livestreamthumb' src='http://thumbnail.api.livestream.com/thumbnail?name=", source.id, "' style='width: 240px; height: 180px'></a>"
-           ].join("")
+                (source.embed_code ? source.embed_code : [
+                  "<a href='", source.url, "'><img class='livestreamthumb' src='http://thumbnail.api.livestream.com/thumbnail?name=", source.id, "' style='width: 240px; height: 180px'></a>"].join(""))].join("")
         }
     },
     "justintv": function(source) {
         return {
             style: {
                 url: "http://static-cdn.jtvnw.net/previews/live_user_" + source.id + "-70x53.jpg",
+                //url: "img/justintv-fancy.png",
                 width: 24,
                 height: 18
             },
             html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>",
-                "<a href='", source.url, "'>",
-                "<img class='justintvthumb' src='http://static-cdn.jtvnw.net/previews/live_user_", source.id, "-320x240.jpg?' width='240' height='180' /></a>"
+                (source.embed_code ? source.embed_code : [
+                  "<a href='", source.url, "'>",
+                  "<img class='justintvthumb' src='http://static-cdn.jtvnw.net/previews/live_user_", source.id, "-320x240.jpg?' width='240' height='180' /></a>"
+                ].join(""))
             ].join("")
         }
     },
     "ustream": function(source) {
+        console.log(source.embed_code);
         return {
             style: {
-                url: (source.livethumb ? source.livethumb : "img/ustream-fancy.png"),
+                url: "img/ustream-fancy.png",
                 width: 25,
                 height: 25
             },
-            html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>", "<a href='", source.url, "'><img src='", (source.livethumb ? source.livethumb : "img/ustream.jpg"), "'></a>"].join("")
+          html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>", 
+              (source.embed_code ? source.embed_code : [
+                "<a href='", source.url, "'><img src='",
+                (source.livethumb ? source.livethumb : "img/ustream.jpg"),
+                "'></a>"
+              ].join(""))
+          ].join("")
         }
     },
     "earthcam": function(source) {
@@ -121,6 +135,20 @@ var generators = {
               height: 25
             },
             html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>", "<a href='", source.url, "'><img src='img/earthcam-fancy.png' /></a>"].join("")
+        }
+    },
+    "other": function(source) {
+        return {
+            style: {
+              url: "img/other-fancy.png",
+              width: 25,
+              height: 25
+            },
+            html: ["<h2><a href='", source.url, "'>", source.location, "</a></h2>",
+                (source.embed_code ? source.embed_code : [
+                  "<a href='", source.url, "'><img src='img/other-fancy.png' /></a>"
+                ].join(""))
+            ].join("")
         }
     }
 };
@@ -162,6 +190,7 @@ var weather = new WeatherLayer("http://openweathermap.org/t/t?url=", {
   attribution: "<a href='http://openweathermap.org'>Windspeed data by OpenWeatherMap.org</a>"
 })
 
+//var webcams = new L.KML("eastern_seaboard_webcams.kml");
 
 var map = new L.Map('map', {
     layers: [osm, weather]
@@ -188,7 +217,7 @@ for (var i = 0; i < data.sources.length; i++) {
     var point = new L.LatLng(lat, lng);
     var marker = new L.Marker(point, {icon: icon})
     marker.addTo(map);
-    marker.bindPopup(repr.html);
+    marker.bindPopup(repr.html, {maxWidth: '600px'});
     bounds.push(point);
 }
 map.fitBounds(new L.LatLngBounds(bounds));
