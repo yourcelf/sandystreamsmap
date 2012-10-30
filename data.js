@@ -311,6 +311,29 @@ var data = {
       "livethumb": "", 
       "location": "Brooklyn, NY", 
       "provider": "ustream"
+    }, 
+    {
+      "embed_code": "", 
+      "point": {
+        "lat": 42.3736158, 
+        "lng": -71.10973349999999
+      }, 
+      "url": "http://18.111.38.233:8080/videofeed", 
+      "livethumb": "", 
+      "location": "Cambridge, MA", 
+      "provider": "other"
+    }, 
+    {
+      "embed_code": "<iframe width=\"560\" height=\"340\" src=\"http://cdn.livestream.com/embed/ribsbc?layout=4&amp;height=340&amp;width=560&amp;autoplay=false\" style=\"border:0;outline:0\" frameborder=\"0\" scrolling=\"no\"></iframe><div style=\"font-size: 11px;padding-top:10px;text-align:center;width:560px\"><a href=\"http://www.livestream.com/ribsbc?utm_source=lsplayer&amp;utm_medium=embed&amp;utm_campaign=footerlinks\" title=\"Watch ribsbc\">ribsbc</a> on livestream.com. <a href=\"http://www.livestream.com/?utm_source=lsplayer&amp;utm_medium=embed&amp;utm_campaign=footerlinks\" title=\"Broadcast Live Free\">Broadcast Live Free</a></div>", 
+      "point": {
+        "lat": 41.4723242, 
+        "lng": -71.4264443
+      }, 
+      "url": "http://www.livestream.com/ribsbc", 
+      "livethumb": "The Camera is located in Narragansett RI at the Bonnet Shores Beach Club and prvoides a view of the ocean.", 
+      "location": "Bonnet Shores Beach, Narragansett, RI", 
+      "provider": "livestream", 
+      "id": "ribsbc"
     }
   ]
 }

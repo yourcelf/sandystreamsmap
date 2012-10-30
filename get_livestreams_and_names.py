@@ -41,7 +41,7 @@ for url, locname, livethumb, embed_code, notes in items:
         source['provider'] = "ustream"
     elif "livestream" in url:
         source['provider'] = "livestream"
-        source['id'] = re.search("livestream.com/([^/]+)/", url).group(1)
+        source['id'] = re.search("livestream.com/([^/]+)(/|$)", url).group(1)
     elif "justin" in url:
         source['provider'] = "justintv"
         source['id'] = re.search("justin.tv/([^/#]+)(/|$|#)", url).group(1)
